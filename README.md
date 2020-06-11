@@ -22,17 +22,31 @@ $ terraform init
 $ terraform apply
 ```
 
+The Terraform configuration looks like this:
+
+```terraform
+data "sergiobuj_network" "nonprod" {
+    namespace = "stage"
+}
+
+data "sergiobuj_network" "production" {
+    namespace = "production"
+}
+
+output "vpc_non_prod" {
+  value = data.sergiobuj_network.nonprod.vpc
+}
+
+output "vpc_prod" {
+  value = data.sergiobuj_network.production.vpc
+}
+```
+
 Terraform output should show:
 
 ```bash
 $ terraform output
 
-subnets_non_prod = [
-  "ARN::subnet:default",
-]
-subnets_prod = [
-  "ARN::subnet:production",
-]
 vpc_non_prod = ARN:VPCstage
 vpc_prod = ARN:VPCproduction
 ```
